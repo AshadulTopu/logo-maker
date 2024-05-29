@@ -1,0 +1,7 @@
+what I learned about this project
+
+youtube video link - https://www.youtube.com/watch?v=XdsZA8wSNDg
+
+1. shadcn - ui component library
+2. lucid icon - icon library
+2. react-best-gradient-color-picker - best gradient color picker
