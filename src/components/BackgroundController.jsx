@@ -1,13 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Slider } from "./ui/slider";
 import ColorPickerController from "./ColorPickerController";
+import { UpdateStorageContext } from "@/context/UpdateStorageContext";
 
 export default function BackgroundController() {
-  const [rounded, setRounded] = useState(0);
-  const [padding, setPadding] = useState(0);
-  const [color, setColor] = useState("#000000");
-
   const storageValue = JSON.parse(localStorage.getItem("value"));
+
+  const [rounded, setRounded] = useState(
+    storageValue ? storageValue?.bgRounded : 0,
+  );
+  const [padding, setPadding] = useState(
+    storageValue ? storageValue?.bgPadding : 0,
+  );
+  const [color, setColor] = useState(
+    storageValue ? storageValue?.bgColor : "#000000",
+  );
+  const { updateStorage, setUpdateStorage } = useContext(UpdateStorageContext);
 
   useEffect(() => {
     const updateValue = {
@@ -16,6 +24,9 @@ export default function BackgroundController() {
       bgPadding: padding,
       bgColor: color,
     };
+
+    // Update context
+    setUpdateStorage(updateValue);
 
     // Update localStorage
     localStorage.setItem("value", JSON.stringify(updateValue));
@@ -29,7 +40,7 @@ export default function BackgroundController() {
           <span>{rounded} px</span>
         </div>
         <Slider
-          defaultValue={[0]}
+          defaultValue={[rounded]}
           max={512}
           step={1}
           onValueChange={(event) => setRounded(event[0])}
@@ -41,7 +52,7 @@ export default function BackgroundController() {
           <span>{padding} px</span>
         </div>
         <Slider
-          defaultValue={[0]}
+          defaultValue={[padding]}
           max={100}
           step={1}
           onValueChange={(event) => setPadding(event[0])}
